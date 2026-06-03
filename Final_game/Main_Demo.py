@@ -2196,19 +2196,38 @@ def show_feedback_window(history_file="touch_history.json"):
         "legend.labelcolor": TEXT_COL,
     })
 
-    fig = plt.figure(figsize=(15, 9))
+    try:
+        import tkinter as _tk
+        _root = _tk.Tk(); _root.withdraw()
+        _sw = _root.winfo_screenwidth(); _sh = _root.winfo_screenheight()
+        _root.destroy()
+        _dpi = 100
+        _figsize = (_sw / _dpi, _sh / _dpi)
+    except Exception:
+        _figsize = (15, 9)
+    fig = plt.figure(figsize=_figsize)
     try:
         fig.canvas.manager.set_window_title("Session Feedback")
     except Exception:
         pass
     try:
         mgr = plt.get_current_fig_manager()
-        mgr.window.showMaximized()          # Qt backends (PyQt5 / PySide2)
-    except Exception:
+        # Try all known backends in order
         try:
-            mgr.window.state("zoomed")      # Tk backend
+            mgr.window.showMaximized()          # Qt (PyQt5 / PySide2)
         except Exception:
-            pass
+            try:
+                mgr.window.state("zoomed")      # Tk
+            except Exception:
+                try:
+                    mgr.frame.Maximize(True)    # wx
+                except Exception:
+                    try:
+                        mgr.full_screen_toggle() # GTK
+                    except Exception:
+                        pass
+    except Exception:
+        pass
 
     suptitle_obj = fig.suptitle(
         f"Hånd Rehabilitering  ·  Session {n_sessions}  ·  Slide 1 / 3",
