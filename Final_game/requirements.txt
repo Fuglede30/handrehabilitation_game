@@ -1,0 +1,15 @@
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
+pandas
+numpy
+scipy
+matplotlib
+opencv-python
+tqdm
+mediapipe==0.10.14
+scikit-learn
+ultralytics
+pyyaml
+pynput
+pygame
