@@ -7,6 +7,8 @@ Man skal blot lave en mappe med et navn på og fylde den mappe med de billeder m
 Der kan laves flere billedmappe i Pictures-mappen, så man kan have forskellige kategorier af billeder.
 Hele spillet er på dansk
 
+Spillet gør brug af brug af 5 4x6 Lego plader som giver inputtet til spillene. Spillet kan ikke spilles uden at et kamera kan se disse 5 brikker
+
 -English-
 To play this hand rehabilitation game, you simply need to download the final game folder, meaning the entire repository.
 The program runs in Python. First, you need to run install_requirements.py. Afterwards, you can run Main_Demo.py, which is the full game itself and explains how to do everything.
@@ -14,3 +16,5 @@ One of the games involves a picture game where you can upload your own images th
 You simply need to create a folder with a name of your choice and fill that folder with the images you want to display in the game, simply put the folder into the games/pictures folder.
 Multiple image folders can be created inside the Pictures folder, so you can have different categories of images.
 The entire game is in Danish.
+
+The game makes use of 5 4x6 Lego plates that gives the input to the game. the game cannot run without detecting 5 of these types of plates through a camera connected to the pc
