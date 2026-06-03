@@ -18,3 +18,5 @@ Multiple image folders can be created inside the Pictures folder, so you can hav
 The entire game is in Danish.
 
 The game makes use of 5 4x6 Lego plates that gives the input to the game. the game cannot run without detecting 5 of these types of plates through a camera connected to the pc
+
+For reproduceability the following kaggle data set were used to train https://www.kaggle.com/datasets/ronanpickell/b100-lego-detection-dataset and https://www.kaggle.com/datasets/dreamfactor/biggest-lego-dataset-600-parts
