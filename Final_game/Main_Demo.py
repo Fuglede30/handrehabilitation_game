@@ -169,10 +169,10 @@ SUGGEST_COOLDOWN = 2  # sessions a finger is locked after any change is suggeste
 # camera distances: 44 cm, 49 cm, 54 cm) rescale the playing measurements back
 # down to be comparable with the goal lengths stored at calibration time.
 FINGER_PLAY_SCALE = {
-    "Pege":  0.933,
-    "Lange": 0.909,
+    "Pege":  0.896,
+    "Lange": 0.867,
     "Ringe": 0.908,
-    "Lille": 0.963,
+    "Lille": 0.939,
 }
 
 FINGER_NAMES   = ["Tommel", "Pege", "Lange", "Ringe", "Lille"]
@@ -3257,7 +3257,7 @@ def trim_touch_history(touch_history, keep_frames=3):
 
     return trimmed
 
-def compute_steadiness(touch_history, clickable_regions, k=1.0):
+def compute_steadiness(touch_history, clickable_regions, k=1):
 
     finger_map = region_to_finger_map(clickable_regions)
 
@@ -3297,19 +3297,25 @@ def compute_steadiness(touch_history, clickable_regions, k=1.0):
             x, y  = pts[:, 0], pts[:, 1]
             x_bar, y_bar = np.mean(x), np.mean(y)
 
-            # Least-squares slope a and intercept b
-            denom = np.sum((x - x_bar) ** 2)
-
-            if denom == 0:
-                # Degenerate: all points share the same x (perfectly vertical)
-                scores.append(100.0)
-                continue
-
-            a = np.sum((x - x_bar) * (y - y_bar)) / denom
-            b = y_bar - a * x_bar
-
-            # Perpendicular distance from each point to the line ax - y + b = 0
-            d_i = np.abs(a * x - y + b) / np.sqrt(a ** 2 + 1)
+            # Orthogonal (total least squares) regression — algebraic 2-D formula.
+            # Minimises perpendicular distances — consistent with d_i below.
+            pts_c = pts - np.array([x_bar, y_bar])
+            Sxx = np.sum(pts_c[:, 0] ** 2)
+            Syy = np.sum(pts_c[:, 1] ** 2)
+            Sxy = np.sum(pts_c[:, 0] * pts_c[:, 1])
+ 
+            if abs(Sxy) < 1e-10:
+                # No covariance: line is axis-aligned
+                normal = np.array([1.0, 0.0]) if Syy >= Sxx else np.array([0.0, 1.0])
+            else:
+                diff = Syy - Sxx
+                slope = (diff + np.sqrt(diff ** 2 + 4 * Sxy ** 2)) / (2 * Sxy)
+                # Unit normal perpendicular to line direction (1, slope)
+                normal = np.array([-slope, 1.0])
+                normal /= np.linalg.norm(normal)
+ 
+            # Perpendicular distance from each point to the line
+            d_i = np.abs(pts_c @ normal)
 
             # RMS perpendicular distance
             d_rms = np.sqrt(np.mean(d_i ** 2))
