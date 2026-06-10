@@ -2860,10 +2860,14 @@ def show_feedback_window(history_file="touch_history.json"):
                 txt(cx, y - sh*1.3, "flytning", color=GREEN, size=8, mono=True)
             else:
                 moves = []
-                if d["BR"]+d["BL"] > SUGGEST_A: moves.append("NED ↓")
-                if d["TR"]+d["TL"] > SUGGEST_B: moves.append("OP ↑")
-                if d["TR"]+d["BR"] > SUGGEST_C: moves.append("HØJRE →")
-                if d["TL"]+d["BL"] > SUGGEST_D: moves.append("VENSTRE ←")
+                if d["BR"]+d["BL"] > SUGGEST_A and d["TR"]+d["TL"] < SUGGEST_B:
+                    moves.append("NED ↓")
+                if d["TR"]+d["TL"] > SUGGEST_B and d["BR"]+d["BL"] < SUGGEST_A:
+                    moves.append("OP ↑")
+                if d["TR"]+d["BR"] > SUGGEST_C and d["TL"]+d["BL"] < SUGGEST_D: 
+                    moves.append("HØJRE →")
+                if d["TL"]+d["BL"] > SUGGEST_D and d["TR"]+d["BR"] < SUGGEST_C:
+                    moves.append("VENSTRE ←")
                 if moves:
                     for mi, mv in enumerate(moves):
                         txt(cx, y - mi*sh*1.3, mv, color=GOLD, size=9, bold=True, mono=True)
