@@ -132,7 +132,7 @@ CONTROL_PORT = 50555
 
 # Maximum number of LEGO bricks to detect and track
 MAX_LEGO_BRICKS = 5
-MAX_DETECTION_RETRIES = 5
+MAX_DETECTION_RETRIES = 0
 THUMB_ACTIVATER = False #set to True if thumb activation should be used
 
 CALIB_POINTS  = 5
@@ -171,7 +171,7 @@ SUGGEST_COOLDOWN = 2  # sessions a finger is locked after any change is suggeste
 FINGER_PLAY_SCALE = {
     "Pege":  0.896,
     "Lange": 0.867,
-    "Ringe": 0.908,
+    "Ringe": 0.891,
     "Lille": 0.939,
 }
 
